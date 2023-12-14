@@ -1,6 +1,6 @@
 package com.example.countrylocaldb.di
 
-import com.example.countrylocaldb.data.data_source.remote.CountryListApi
+import com.example.countrylocaldb.data.data_source.remote.api.CountryListApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.example.countrylocaldb.data.data_source.remote
+package com.example.countrylocaldb.data.data_source.remote.api
 
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import retrofit2.Response
