@@ -6,7 +6,7 @@ import io.objectbox.relation.ToMany
 
 @Entity
 data class CountryEntity(
-    @Id val countryId: Int = 0,
+    @Id var countryId: Long = 0,
     val name: String
 ) {
     lateinit var cityList: ToMany<CityEntity>

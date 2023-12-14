@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getCountries()
         viewModel.liveDataCountries.observe(this) { res ->
-            binding.text.text = res.body()!!.toString()
+            binding.text.text = res
         }
     }
 }

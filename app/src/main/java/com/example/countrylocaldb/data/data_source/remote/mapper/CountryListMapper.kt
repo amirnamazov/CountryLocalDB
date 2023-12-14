@@ -9,28 +9,27 @@ import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 
 object CountryListMapper {
 
-    fun maptoCountryList(countryListDTO: CountryListDTO): List<CountryEntity> =
-        countryListDTO.countryList?.map {
+    fun CountryListDTO.mapToCountryEntities(): List<CountryEntity> = countryList?.map {
             CountryEntity(
-                countryId = it?.countryId ?: 0,
+                countryId = it?.countryId?.toLong() ?: 0,
                 name = it?.name ?: ""
             ).apply {
-                it?.mapToCityList()?.let { list -> cityList.addAll(list) }
+                it?.mapToCityEntities()?.let { list -> cityList.addAll(list) }
             }
         } ?: emptyList()
 
-    private fun CountryDTO.mapToCityList(): List<CityEntity> = cityList?.map {
+    private fun CountryDTO.mapToCityEntities(): List<CityEntity> = cityList?.map {
         CityEntity(
-            cityId = it?.cityId ?: 0,
+            cityId = it?.cityId?.toLong() ?: 0,
             name = it?.name ?: "",
         ).apply {
-            it?.mapToPeopleList()?.let { list -> peopleList.addAll(list) }
+            it?.mapToPeopleEntities()?.let { list -> peopleList.addAll(list) }
         }
     } ?: emptyList()
 
-    private fun CityDTO.mapToPeopleList(): List<PeopleEntity> = peopleList?.map {
+    private fun CityDTO.mapToPeopleEntities(): List<PeopleEntity> = peopleList?.map {
         PeopleEntity(
-            humanId = it?.humanId ?: 0,
+            humanId = it?.humanId?.toLong() ?: 0,
             name = it?.name ?: "",
             surname = it?.surname ?: "",
         )
