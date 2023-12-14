@@ -61,4 +61,6 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.49")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
+
+    implementation("io.objectbox:objectbox-kotlin:3.7.1")
 }
