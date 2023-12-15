@@ -9,12 +9,31 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:title="@string/people"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@string/people"
+            android:textSize="20sp"
+            android:fontFamily="@font/inter_semi_bold"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/toolbar_dropshadow"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_people"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_people"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

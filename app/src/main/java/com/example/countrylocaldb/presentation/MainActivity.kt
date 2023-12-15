@@ -13,22 +13,29 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    private val peopleAdapter by lazy { PeopleAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupActionBar()
 
+        binding.rvPeople.adapter = peopleAdapter
+
         viewModel.getCountries()
         viewModel.liveDataCountries.observe(this) { res ->
-//            binding.text.text = res
+            peopleAdapter.submitList(res)
         }
+
+//        setupRvPeople()
     }
 
     private fun setupActionBar() {
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setDisplayShowHomeEnabled(true)
-        }
+        title = null
+    }
+
+    private fun setupRvPeople() = with(binding.rvPeople) {
+
     }
 }

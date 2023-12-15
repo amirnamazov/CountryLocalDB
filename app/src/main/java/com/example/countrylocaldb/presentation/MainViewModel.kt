@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
+import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.domain.use_case.CountryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.objectbox.Box
@@ -20,7 +21,7 @@ class MainViewModel @Inject constructor(
     private val box: Box<CountryEntity>
 ) : ViewModel() {
 
-    private val _liveDataCountries = MutableLiveData<String>()
+    private val _liveDataCountries = MutableLiveData<List<PeopleEntity>>()
     val liveDataCountries get() = _liveDataCountries
 
     fun getCountries() = viewModelScope.launch(Dispatchers.IO) {
@@ -28,15 +29,15 @@ class MainViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 _liveDataCountries.value = when (res) {
                     is ResourceState.Error -> {
-                        println(res.message); res.message
+                        emptyList()
                     }
                     is ResourceState.Loading -> {
-                        "loooaaddiing"
+                        emptyList()
                     }
                     is ResourceState.Success -> {
                         box.all.flatMap { country ->
                             country.cityList.flatMap { city -> city.peopleList }
-                        }.toString()
+                        }
                     }
                 }
             }
