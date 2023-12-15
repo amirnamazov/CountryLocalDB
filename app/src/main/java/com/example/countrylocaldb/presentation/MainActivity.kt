@@ -13,21 +13,13 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private val peopleAdapter by lazy { PeopleAdapter() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupActionBar()
 
-        binding.rvPeople.adapter = peopleAdapter
-
         viewModel.getCountries()
-        viewModel.liveDataCountries.observe(this) { res ->
-            peopleAdapter.submitList(res)
-        }
-
-//        setupRvPeople()
+        setupRvPeople()
     }
 
     private fun setupActionBar() {
@@ -35,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         title = null
     }
 
-    private fun setupRvPeople() = with(binding.rvPeople) {
-
+    private fun setupRvPeople() {
+        val peopleAdapter = PeopleAdapter().also { binding.rvPeople.adapter = it }
+        viewModel.liveDataCountries.observe(this) { res ->
+            peopleAdapter.submitList(res)
+        }
     }
 }
