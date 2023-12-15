@@ -1,11 +1,14 @@
 package com.example.countrylocaldb.domain.repository
 
-import com.example.countrylocaldb.common.ResourceState
-import com.example.countrylocaldb.domain.model.Country
-import kotlinx.coroutines.flow.Flow
+import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
+import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
+import io.objectbox.query.Query
+import retrofit2.Response
 
 interface CountryListRepository {
-    suspend fun getCountriesRemote(): Flow<ResourceState>
+    suspend fun getCountryList(): Response<CountryListDTO>
 
-    suspend fun getCountriesLocal(): List<Country>
+    fun putCountriesToBox(entities: List<CountryEntity>)
+
+    fun getQueryCountry(): Query<CountryEntity>
 }

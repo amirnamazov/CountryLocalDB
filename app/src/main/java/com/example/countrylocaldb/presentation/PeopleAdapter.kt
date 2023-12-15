@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.databinding.ItemPeopleBinding
+import com.example.countrylocaldb.domain.model.People
 
-class PeopleAdapter : ListAdapter<PeopleEntity, PeopleAdapter.PeopleViewHolder>(COMPARATOR) {
+class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,17 +22,17 @@ class PeopleAdapter : ListAdapter<PeopleEntity, PeopleAdapter.PeopleViewHolder>(
     }
 
     class PeopleViewHolder(private val binding: ItemPeopleBinding) : ViewHolder(binding.root) {
-        fun bind(entity: PeopleEntity) {
+        fun bind(entity: People) {
             binding.fullName = entity.run { "$name $surname" }
         }
     }
 
     companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<PeopleEntity>() {
-            override fun areItemsTheSame(oldItem: PeopleEntity, newItem: PeopleEntity): Boolean =
-                oldItem.humanId == newItem.humanId
+        private val COMPARATOR = object : DiffUtil.ItemCallback<People>() {
+            override fun areItemsTheSame(oldItem: People, newItem: People): Boolean =
+                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PeopleEntity, newItem: PeopleEntity): Boolean =
+            override fun areContentsTheSame(oldItem: People, newItem: People): Boolean =
                 oldItem == newItem
         }
     }
