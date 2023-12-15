@@ -21,23 +21,26 @@ class MainViewModel @Inject constructor(
     private val box: Box<CountryEntity>
 ) : ViewModel() {
 
-    private val _liveDataCountries = MutableLiveData<List<PeopleEntity>>()
+    private val _liveDataCountries = MutableLiveData<List<PeopleEntity?>>()
     val liveDataCountries get() = _liveDataCountries
 
     fun getCountries() = viewModelScope.launch(Dispatchers.IO) {
         useCase.getCountryList().collectLatest { res ->
             withContext(Dispatchers.Main) {
                 _liveDataCountries.value = when (res) {
-                    is ResourceState.Error -> {
+                    ResourceState.Error -> {
                         emptyList()
                     }
-                    is ResourceState.Loading -> {
+                    ResourceState.Loading -> {
                         emptyList()
                     }
-                    is ResourceState.Success -> {
-                        box.all.flatMap { country ->
+                    ResourceState.Success -> {
+                        val list = box.all.flatMap { country ->
                             country.cityList.flatMap { city -> city.peopleList }
                         }
+                        val arrayList = arrayListOf<PeopleEntity?>(null, null)
+                        arrayList.addAll(list)
+                        arrayList.filterNotNull()
                     }
                 }
             }

@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class CountryListUseCase @Inject constructor(private val repository: CountryListRepository) {
 
-    suspend fun getCountryList() = repository.getCountryList()
+    suspend fun getCountryList() = repository.getCountriesRemote()
 }
