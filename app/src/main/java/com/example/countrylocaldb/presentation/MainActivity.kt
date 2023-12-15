@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.countrylocaldb.databinding.ActivityMainBinding
+import com.example.countrylocaldb.presentation.people.PeopleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        viewModel.getCountries()
+        viewModel.setPeopleList()
         setupRvPeople()
     }
 
@@ -29,8 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRvPeople() {
         val peopleAdapter = PeopleAdapter().also { binding.rvPeople.adapter = it }
-        viewModel.liveDataCountries.observe(this) { res ->
-            peopleAdapter.submitList(res)
+        viewModel.liveDataPeople.observe(this) { peopleList ->
+//            println("65765765   ${peopleList.size}")
+            peopleAdapter.submitList(peopleList)
         }
     }
 }

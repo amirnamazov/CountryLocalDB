@@ -1,7 +1,10 @@
 package com.example.countrylocaldb.domain.use_case
 
 import com.example.countrylocaldb.common.ResourceState
+import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
+import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToCountryList
 import com.example.countrylocaldb.data.data_source.remote.mapper.CountryEntitiesMapper.mapToCountryEntities
+import com.example.countrylocaldb.domain.model.People
 import com.example.countrylocaldb.domain.repository.CountryListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -26,4 +29,9 @@ class CountryListUseCase @Inject constructor(private val repository: CountryList
     }
 
     fun getQueryCountry() = repository.getQueryCountry()
+
+    fun flatMapToListPeople(list: List<CountryEntity>): List<People> =
+        list.mapToCountryList().flatMap { country ->
+            country.cityList.flatMap { city -> city.peopleList }
+        }
 }

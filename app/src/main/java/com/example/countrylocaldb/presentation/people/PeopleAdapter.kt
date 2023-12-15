@@ -1,4 +1,4 @@
-package com.example.countrylocaldb.presentation
+package com.example.countrylocaldb.presentation.people
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,13 +17,13 @@ class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(COMPAR
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val entity = getItem(position)
-        if (entity != null) holder.bind(entity)
+        val people = getItem(position)
+        if (people != null) holder.bind(people)
     }
 
     class PeopleViewHolder(private val binding: ItemPeopleBinding) : ViewHolder(binding.root) {
-        fun bind(entity: People) {
-            binding.fullName = entity.run { "$name $surname" }
+        fun bind(people: People) {
+            binding.fullName = people.run { "$name $surname" }
         }
     }
 
