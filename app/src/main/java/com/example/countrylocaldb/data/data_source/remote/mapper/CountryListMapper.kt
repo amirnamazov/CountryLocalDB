@@ -8,6 +8,7 @@ import com.example.countrylocaldb.data.data_source.remote.dto.CountryDTO
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 
 object CountryListMapper {
+
     fun CountryListDTO.mapToCountryEntities(): List<CountryEntity> = countryList?.map {
         val countryEntity = CountryEntity(name = it?.name ?: "").apply {
             it?.mapToCityEntities()?.let { list -> cityList.addAll(list) }

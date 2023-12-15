@@ -16,10 +16,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupActionBar()
 
         viewModel.getCountries()
         viewModel.liveDataCountries.observe(this) { res ->
-            binding.text.text = res
+//            binding.text.text = res
+        }
+    }
+
+    private fun setupActionBar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
         }
     }
 }
