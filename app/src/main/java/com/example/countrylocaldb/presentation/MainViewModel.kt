@@ -7,7 +7,7 @@ import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
 import com.example.countrylocaldb.domain.use_case.CountryListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.objectbox.BoxStore
+import io.objectbox.Box
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val useCase: CountryListUseCase,
-    private val boxStore: BoxStore
+    private val box: Box<CountryEntity>
 ) : ViewModel() {
 
     private val _liveDataCountries = MutableLiveData<String>()
@@ -30,13 +30,13 @@ class MainViewModel @Inject constructor(
                     is ResourceState.Error -> {
                         println(res.message); res.message
                     }
-
                     is ResourceState.Loading -> {
                         "loooaaddiing"
                     }
-
                     is ResourceState.Success -> {
-                        boxStore.boxFor(CountryEntity::class.java).get(1).toString()
+                        box.all.flatMap { country ->
+                            country.cityList.flatMap { city -> city.peopleList }
+                        }.toString()
                     }
                 }
             }
