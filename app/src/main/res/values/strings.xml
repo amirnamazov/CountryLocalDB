@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CountryLocalDB</string>
     <string name="people">People</string>
+    <string name="filter">Filter</string>
 </resources>

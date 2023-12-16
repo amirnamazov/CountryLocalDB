@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/frag_people"
+    android:id="@+id/nav_main">
+
+    <fragment
+        android:id="@+id/frag_people"
+        android:name="com.example.countrylocaldb.presentation.people.PeopleFragment"
+        android:label="@string/people"
+        tools:layout="@layout/fragment_people">
+        <action
+            android:id="@+id/fromPeopleToFilterFrag"
+            app:destination="@id/frag_filter"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/frag_filter"
+        android:name="com.example.countrylocaldb.presentation.filter.FilterFragment"
+        android:label="@string/filter"
+        tools:layout="@layout/fragment_filter"/>
+
+</navigation>

@@ -21,10 +21,6 @@ class MainViewModel @Inject constructor(private val useCase: CountryListUseCase)
 
     private val query get() = useCase.getQueryCountry()
 
-//    private var query by Delegates.observable(useCase.getQueryCountry()) { _, old, new ->
-//
-//    }
-
     val liveDataPeople: LiveData<List<People>> by lazy {
         objectBoxLiveData.map { useCase.flatMapToListPeople(it) }
     }

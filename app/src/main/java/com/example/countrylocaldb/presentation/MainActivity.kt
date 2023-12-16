@@ -1,10 +1,12 @@
 package com.example.countrylocaldb.presentation
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.example.countrylocaldb.R
 import com.example.countrylocaldb.databinding.ActivityMainBinding
-import com.example.countrylocaldb.presentation.people.PeopleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,27 +14,38 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private val viewModel: MainViewModel by viewModels()
+    private val navController: NavController by lazy {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(binding.fragContainer.id) as NavHostFragment
+        navHostFragment.findNavController()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        setupActionBar()
-
-        viewModel.setPeopleList()
-        setupRvPeople()
+        initializeViews()
+        setupNavigation()
     }
 
-    private fun setupActionBar() {
-        setSupportActionBar(binding.toolbar)
-        title = null
+    private fun initializeViews() = with(binding) {
+        setContentView(root)
+        setSupportActionBar(toolbar)
     }
 
-    private fun setupRvPeople() {
-        val peopleAdapter = PeopleAdapter().also { binding.rvPeople.adapter = it }
-        viewModel.liveDataPeople.observe(this) { peopleList ->
-//            println("65765765   ${peopleList.size}")
-            peopleAdapter.submitList(peopleList)
+    private fun setupNavigation() {
+        navController.addOnDestinationChangedListener { _, des, _ ->
+            des.label.also {
+                title = it
+                setupNavigationBack(it != getString(R.string.people))
+            }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
+
+    private fun setupNavigationBack(show: Boolean) {
+        supportActionBar?.let {
+            it.setDisplayShowHomeEnabled(show)
+            it.setDisplayHomeAsUpEnabled(show)
         }
     }
 }
