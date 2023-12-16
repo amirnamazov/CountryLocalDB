@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="filter"
+            type="com.example.countrylocaldb.presentation.filter.FilterModel" />
+        <variable
+            name="itemClick"
+            type="com.example.countrylocaldb.presentation.filter.FilterAdapter.ItemClick" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckedTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="@{filter.checked}"
+            android:text="@{filter.name}"
+            android:onClick="@{(view) -> itemClick.onItemClicked(filter)}"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textSize="18sp"
+            android:textColor="@color/brown"/>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

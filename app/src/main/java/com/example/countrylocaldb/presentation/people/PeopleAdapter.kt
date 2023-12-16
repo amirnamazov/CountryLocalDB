@@ -23,7 +23,7 @@ class PeopleAdapter : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(COMPAR
 
     class PeopleViewHolder(private val binding: ItemPeopleBinding) : ViewHolder(binding.root) {
         fun bind(people: People) {
-            binding.fullName = people.run { "$name $surname" }
+            binding.people = people
         }
     }
 
