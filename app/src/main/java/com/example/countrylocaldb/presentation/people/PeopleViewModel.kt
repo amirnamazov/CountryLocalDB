@@ -6,17 +6,16 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.domain.model.People
-import com.example.countrylocaldb.domain.use_case.CountryListUseCase
+import com.example.countrylocaldb.domain.use_case.PeopleListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.objectbox.android.ObjectBoxLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class PeopleViewModel @Inject constructor(private val useCase: CountryListUseCase) : ViewModel() {
+class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase) : ViewModel() {
 
     private val query = useCase.getQueryPeople()
 
@@ -32,9 +31,9 @@ class PeopleViewModel @Inject constructor(private val useCase: CountryListUseCas
         useCase.getCountryList().collect {
             withContext(Dispatchers.Main) {
                 if (it == ResourceState.Success) {
-                    delay(2000)
-                    val longArray2 = longArrayOf(0, 1, 2, 3)
-                    useCase.setParamsToQueryPeople(longArray2)
+//                    delay(2000)
+//                    val longArray2 = longArrayOf(0, 1, 2, 3)
+//                    useCase.setParamsToQueryPeople(longArray2)
                 }
             }
         }

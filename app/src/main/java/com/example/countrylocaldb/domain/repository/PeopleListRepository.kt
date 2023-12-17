@@ -6,7 +6,7 @@ import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import io.objectbox.query.Query
 import retrofit2.Response
 
-interface CountryListRepository {
+interface PeopleListRepository {
 
     suspend fun getCountriesFromApi(): Response<CountryListDTO>
 

@@ -5,18 +5,18 @@ import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity_
 import com.example.countrylocaldb.data.data_source.remote.api.CountryListApi
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
-import com.example.countrylocaldb.domain.repository.CountryListRepository
+import com.example.countrylocaldb.domain.repository.PeopleListRepository
 import io.objectbox.Box
 import io.objectbox.query.Query
 import retrofit2.Response
 import javax.inject.Inject
 
-class CountryListRepositoryImpl @Inject constructor(
+class PeopleListRepositoryImpl @Inject constructor(
     private val api: CountryListApi,
     private val countryEntityBox: Box<CountryEntity>,
     private val peopleEntityBox: Box<PeopleEntity>,
     private val queryPeople: Query<PeopleEntity>
-) : CountryListRepository {
+) : PeopleListRepository {
 
     override suspend fun getCountriesFromApi(): Response<CountryListDTO> = api.getData()
 
