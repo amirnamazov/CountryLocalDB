@@ -1,8 +1,7 @@
 package com.example.countrylocaldb.domain.use_case
 
 import com.example.countrylocaldb.common.ResourceState
-import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
-import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToCountryList
+import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.data.data_source.remote.mapper.CountryEntitiesMapper.mapToCountryEntities
 import com.example.countrylocaldb.domain.model.People
 import com.example.countrylocaldb.domain.repository.CountryListRepository
@@ -19,7 +18,10 @@ class CountryListUseCase @Inject constructor(private val repository: CountryList
         val countryListDTO = response.body()
         if (response.isSuccessful) {
             if (countryListDTO == null) throw NullPointerException()
-            repository.putCountriesToBox(countryListDTO.mapToCountryEntities())
+            val peopleEntities = countryListDTO.mapToCountryEntities().flatMap { countryEntity ->
+                countryEntity.cityList.flatMap { cityEntity -> cityEntity.peopleList }
+            }
+            repository.putCountriesToBox(peopleEntities)
             emit(ResourceState.Success)
         } else {
             emit(ResourceState.Error)
@@ -28,10 +30,14 @@ class CountryListUseCase @Inject constructor(private val repository: CountryList
         emit(ResourceState.Error)
     }
 
-    fun getQueryCountry() = repository.getQueryCountry()
+    fun getQuery() = repository.getQuery()
 
-    fun flatMapToListPeople(list: List<CountryEntity>): List<People> =
-        list.mapToCountryList().flatMap { country ->
-            country.cityList.flatMap { city -> city.peopleList }
-        }
+    fun flatMapToListPeople(entities: List<PeopleEntity>): List<People> = entities.map {
+        People(id = it.humanId, name = it.name, surname = it.surname)
+    }
+
+
+//        list.mapToCountryList().flatMap { country ->
+//            country.cityList.flatMap { city -> city.peopleList }
+//        }
 }
