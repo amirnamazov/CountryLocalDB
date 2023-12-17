@@ -10,18 +10,14 @@ import com.example.countrylocaldb.domain.model.People
 object CountryListMapper {
 
     fun List<CountryEntity>.mapToCountryList(): List<Country> = map { country ->
-        Country(
-            id = country.countryId,
-            name = country.name,
-            cityList = country.cityList.mapToCityList()
-        )
+        Country(id = country.countryId, name = country.name)
     }
 
-    private fun List<CityEntity>.mapToCityList(): List<City> = map { city ->
-        City(id = city.cityId, name = city.name, peopleList = city.peopleList.mapToPeopleList())
+    fun List<CityEntity>.mapToCityList(): List<City> = map { city ->
+        City(id = city.cityId, name = city.name)
     }
 
-    private fun List<PeopleEntity>.mapToPeopleList(): List<People> = map { people ->
+    fun List<PeopleEntity>.mapToPeopleList(): List<People> = map { people ->
         People(id = people.humanId, name = people.name, surname = people.surname)
     }
 }

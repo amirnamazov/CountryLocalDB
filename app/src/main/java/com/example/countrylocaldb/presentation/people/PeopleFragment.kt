@@ -26,7 +26,6 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     private fun setupRvPeople() {
         val peopleAdapter = PeopleAdapter().also { binding.rvPeople.adapter = it }
         viewModel.liveDataPeople.observe(viewLifecycleOwner) { peopleList ->
-            println("232432321   ${peopleList.size}")
             peopleAdapter.submitList(peopleList)
         }
     }

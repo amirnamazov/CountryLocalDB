@@ -12,13 +12,5 @@ interface PeopleListRepository {
 
     suspend fun putCountriesToBox(entities: List<CountryEntity>)
 
-//    suspend fun putPeopleToBox(entities: List<PeopleEntity>)
-
-//    fun getQueryCountries(): Query<CountryEntity>
-//
     fun getQueryPeople(): Query<PeopleEntity>
-
-    fun setParamsToQueryPeople(idArray: LongArray)
-
-    fun getAllHumanIds(): LongArray
 }

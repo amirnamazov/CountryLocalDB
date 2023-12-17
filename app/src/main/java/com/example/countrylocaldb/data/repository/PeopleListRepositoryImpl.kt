@@ -20,13 +20,15 @@ class PeopleListRepositoryImpl @Inject constructor(
 
     override suspend fun getCountriesFromApi(): Response<CountryListDTO> = api.getData()
 
-    override suspend fun putCountriesToBox(entities: List<CountryEntity>) =
+    override suspend fun putCountriesToBox(entities: List<CountryEntity>) {
         countryEntityBox.put(entities)
-
-    override fun setParamsToQueryPeople(idArray: LongArray) = queryPeople
-        .setParameters(PeopleEntity_.humanId, idArray).publish()
+        setAllParamsToQueryPeople()
+    }
 
     override fun getQueryPeople(): Query<PeopleEntity> = queryPeople
 
-    override fun getAllHumanIds(): LongArray = peopleEntityBox.all.map { it.humanId }.toLongArray()
+    private fun setAllParamsToQueryPeople() {
+        val allHumanIds = peopleEntityBox.all.map { it.humanId }.toLongArray()
+        queryPeople.setParameters(PeopleEntity_.humanId, allHumanIds).publish()
+    }
 }

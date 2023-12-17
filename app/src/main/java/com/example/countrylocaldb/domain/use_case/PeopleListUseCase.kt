@@ -2,6 +2,7 @@ package com.example.countrylocaldb.domain.use_case
 
 import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
+import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import com.example.countrylocaldb.data.data_source.remote.mapper.CountryEntitiesMapper.mapToCountryEntities
 import com.example.countrylocaldb.domain.model.People
@@ -32,15 +33,11 @@ class PeopleListUseCase @Inject constructor(private val repository: PeopleListRe
     private suspend fun handleSuccess(countryListDTO: CountryListDTO) {
         val countryEntities = countryListDTO.mapToCountryEntities()
         repository.putCountriesToBox(countryEntities)
-        setParamsToQueryPeople(repository.getAllHumanIds())
     }
 
     fun getQueryPeople(): Query<PeopleEntity> = repository.getQueryPeople()
 
-    fun setParamsToQueryPeople(idArray: LongArray) = repository.setParamsToQueryPeople(idArray)
-
-    fun mapToListPeople(entities: List<PeopleEntity> = getQueryPeople().find()): List<People> =
-        entities.map {
-            People(id = it.humanId, name = it.name, surname = it.surname)
-        }
+    fun mapToListPeople(entities: List<PeopleEntity>): List<People> = CountryListMapper.run {
+        entities.mapToPeopleList()
+    }
 }
