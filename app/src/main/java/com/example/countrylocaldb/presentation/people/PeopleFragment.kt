@@ -15,7 +15,7 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     private val viewModel: PeopleViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.setPeopleList()
+        viewModel.initializePeopleList()
         setupRvPeople()
 
         binding.btnCountryFilter.setOnClickListener {

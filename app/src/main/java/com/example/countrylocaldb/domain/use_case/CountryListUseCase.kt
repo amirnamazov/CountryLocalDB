@@ -2,9 +2,11 @@ package com.example.countrylocaldb.domain.use_case
 
 import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
+import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import com.example.countrylocaldb.data.data_source.remote.mapper.CountryEntitiesMapper.mapToCountryEntities
 import com.example.countrylocaldb.domain.model.People
 import com.example.countrylocaldb.domain.repository.CountryListRepository
+import io.objectbox.query.Query
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -14,14 +16,11 @@ class CountryListUseCase @Inject constructor(private val repository: CountryList
 
     suspend fun getCountryList(): Flow<ResourceState> = flow {
         emit(ResourceState.Loading)
-        val response = repository.getCountryList()
+        val response = repository.getCountriesFromApi()
         val countryListDTO = response.body()
         if (response.isSuccessful) {
             if (countryListDTO == null) throw NullPointerException()
-            val peopleEntities = countryListDTO.mapToCountryEntities().flatMap { countryEntity ->
-                countryEntity.cityList.flatMap { cityEntity -> cityEntity.peopleList }
-            }
-            repository.putCountriesToBox(peopleEntities)
+            handleSuccess(countryListDTO)
             emit(ResourceState.Success)
         } else {
             emit(ResourceState.Error)
@@ -30,14 +29,18 @@ class CountryListUseCase @Inject constructor(private val repository: CountryList
         emit(ResourceState.Error)
     }
 
-    fun getQuery() = repository.getQuery()
-
-    fun flatMapToListPeople(entities: List<PeopleEntity>): List<People> = entities.map {
-        People(id = it.humanId, name = it.name, surname = it.surname)
+    private suspend fun handleSuccess(countryListDTO: CountryListDTO) {
+        val countryEntities = countryListDTO.mapToCountryEntities()
+        repository.putCountriesToBox(countryEntities)
+        setParamsToQueryPeople(repository.getAllHumanIds())
     }
 
+    fun getQueryPeople(): Query<PeopleEntity> = repository.getQueryPeople()
 
-//        list.mapToCountryList().flatMap { country ->
-//            country.cityList.flatMap { city -> city.peopleList }
-//        }
+    fun setParamsToQueryPeople(idArray: LongArray) = repository.setParamsToQueryPeople(idArray)
+
+    fun mapToListPeople(entities: List<PeopleEntity> = getQueryPeople().find()): List<People> =
+        entities.map {
+            People(id = it.humanId, name = it.name, surname = it.surname)
+        }
 }

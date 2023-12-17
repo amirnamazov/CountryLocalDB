@@ -18,32 +18,23 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleViewModel @Inject constructor(private val useCase: CountryListUseCase) : ViewModel() {
 
-    private val objectBoxLiveData by lazy { ObjectBoxLiveData(query) }
+    private val query = useCase.getQueryPeople()
 
-    private val query = useCase.getQuery()
-
-//    private val checkedPeopleList =
-
-//    private val _liveDataPeople = MutableLiveData(useCase.flatMapToListPeople(query.find()))
-
-    val liveDataPeople: LiveData<List<People>> get() = objectBoxLiveData.map {
-        useCase.flatMapToListPeople(it)
+    val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(query).map {
+        useCase.mapToListPeople(it)
     }
 
-    fun setPeopleList() = query.find().let {
-        if (useCase.flatMapToListPeople(it).isEmpty()) getCountriesFromNetwork()
+    fun initializePeopleList() {
+        if (query.find().isEmpty()) getCountriesFromNetwork()
     }
 
     fun getCountriesFromNetwork() = viewModelScope.launch {
         useCase.getCountryList().collect {
             withContext(Dispatchers.Main) {
                 if (it == ResourceState.Success) {
-                    delay(3000)
-//                    val property = query.property(CountryEntity_.name)
-//                    query.setParameter(CountryEntity_.name, "CountryA")
-//                    println("232432321  find  ${property.findStrings().map { it }}")
-
-//                    _liveDataPeople.value = useCase.flatMapToListPeople(query.find()).subList(0, 8)
+                    delay(2000)
+                    val longArray2 = longArrayOf(0, 1, 2, 3)
+                    useCase.setParamsToQueryPeople(longArray2)
                 }
             }
         }
