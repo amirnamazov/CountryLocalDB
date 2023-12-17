@@ -20,7 +20,9 @@
         <CheckedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingVertical="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
             android:gravity="center"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="@{filter.checked}"
