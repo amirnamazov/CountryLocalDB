@@ -2,7 +2,6 @@ package com.example.countrylocaldb.presentation.filter
 
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModel
-import com.example.countrylocaldb.domain.model.Country
 import com.example.countrylocaldb.domain.use_case.FilterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,12 +10,14 @@ import javax.inject.Inject
 class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : ViewModel(),
     FilterAdapter.ItemClick {
 
-    val filterModels: List<FilterModel> by lazy { useCase.getAllCountries().mapToFilterList() }
+    var isCountryFilter = true
+
+    val filterModels: List<FilterModel> by lazy {
+        if (isCountryFilter) useCase.getAllCountries().map { FilterModel(it.id, it.name) }
+        else useCase.getSelectedCities().map { FilterModel(it.id, it.name) }
+    }
 
     val isAllChecked: ObservableBoolean = ObservableBoolean(true)
-
-    private fun List<Country>.mapToFilterList(): List<FilterModel> =
-        map { FilterModel(it.id, it.name) }
 
     fun onCheckAllClicked() = with(isAllChecked) {
         set(!get())
@@ -28,9 +29,10 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
         isAllChecked.set(all { it.checked.get() })
     }
 
-    fun publishSelectedCountries() {
+    fun publishSelectedOptions() {
         val selectedOptions = filterModels.filter { it.checked.get() }
         val idArray = selectedOptions.map { it.id }.toLongArray()
-        useCase.publishSelectedCountries(idArray)
+        if (isCountryFilter) useCase.publishSelectedCountries(idArray)
+        else useCase.publishSelectedCities(idArray)
     }
 }

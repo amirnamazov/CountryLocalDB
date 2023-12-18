@@ -8,6 +8,8 @@ import retrofit2.Response
 
 interface PeopleListRepository {
 
+    fun isLocalDbEmpty(): Boolean
+
     suspend fun getCountriesFromApi(): Response<CountryListDTO>
 
     suspend fun putCountriesToBox(entities: List<CountryEntity>)
@@ -16,5 +18,5 @@ interface PeopleListRepository {
 
     fun clearAllBoxes()
 
-    fun setAllParamsToCity()
+    fun publishAllCities()
 }

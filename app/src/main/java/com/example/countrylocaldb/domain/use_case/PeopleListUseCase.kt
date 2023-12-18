@@ -14,6 +14,8 @@ import javax.inject.Inject
 
 class PeopleListUseCase @Inject constructor(private val repository: PeopleListRepository) {
 
+    fun isLocalDbEmpty(): Boolean = repository.isLocalDbEmpty()
+
     suspend fun getCountryList(): Flow<ResourceState> = flow {
         emit(ResourceState.Loading())
         val response = repository.getCountriesFromApi()
@@ -33,7 +35,7 @@ class PeopleListUseCase @Inject constructor(private val repository: PeopleListRe
         clearAllBoxes()
         val countryEntities = countryListDTO.mapToCountryEntities()
         putCountriesToBox(countryEntities)
-        setAllParamsToCity()
+        publishAllCities()
     }
 
     fun getQueryCity(): Query<CityEntity> = repository.getQueryCity()

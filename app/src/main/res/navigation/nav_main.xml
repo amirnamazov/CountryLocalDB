@@ -19,6 +19,11 @@
         android:id="@+id/frag_filter"
         android:name="com.example.countrylocaldb.presentation.filter.FilterFragment"
         android:label="@string/filter"
-        tools:layout="@layout/fragment_filter"/>
+        tools:layout="@layout/fragment_filter">
+        <argument
+            android:name="isCountryFilter"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 
 </navigation>

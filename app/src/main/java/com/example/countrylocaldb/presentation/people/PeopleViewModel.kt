@@ -18,9 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase) : ViewModel() {
 
-    private val query = useCase.getQueryCity()
-
-    val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(query).map {
+    val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(useCase.getQueryCity()).map {
         useCase.flatMapToPeopleList(it)
     }
 
@@ -28,7 +26,7 @@ class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase
     val liveDataSwipeRefresh: LiveData<Boolean> get() = _liveDataSwipeRefresh
 
     fun initializePeopleList() {
-        if (query.find().isEmpty()) setCountriesFromNetworkToLocalDb()
+        if (useCase.isLocalDbEmpty()) setCountriesFromNetworkToLocalDb()
     }
 
     fun setCountriesFromNetworkToLocalDb() = viewModelScope.launch {

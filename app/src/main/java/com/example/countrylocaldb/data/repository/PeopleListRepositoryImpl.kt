@@ -17,6 +17,8 @@ class PeopleListRepositoryImpl @Inject constructor(
     private val queryCity: Query<CityEntity>
 ) : PeopleListRepository {
 
+    override fun isLocalDbEmpty(): Boolean = countryEntityBox.isEmpty
+
     override suspend fun getCountriesFromApi(): Response<CountryListDTO> = api.getData()
 
     override suspend fun putCountriesToBox(entities: List<CountryEntity>) =
@@ -26,7 +28,7 @@ class PeopleListRepositoryImpl @Inject constructor(
 
     override fun clearAllBoxes() = countryEntityBox.removeAll()
 
-    override fun setAllParamsToCity() {
+    override fun publishAllCities() {
         val cities = countryEntityBox.all.flatMap { it.cityList }
         val idArray = cities.map { it.cityId }.toLongArray()
         queryCity.setParameters(CityEntity_.cityId, idArray).publish()

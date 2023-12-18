@@ -11,10 +11,8 @@ import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor(
     private val countryEntityBox: Box<CountryEntity>,
-//    private val cityEntityBox: Box<CityEntity>,
     private val queryCountry: Query<CountryEntity>,
-    private val queryCity: Query<CityEntity>,
-//    private val queryPeople: Query<PeopleEntity>
+    private val queryCity: Query<CityEntity>
 ) : FilterRepository {
 
     override fun getAllCountries(): List<CountryEntity> = countryEntityBox.all
@@ -22,13 +20,13 @@ class FilterRepositoryImpl @Inject constructor(
     override fun publishSelectedCountries(idArray: LongArray) {
         queryCountry.setParameters(CountryEntity_.countryId, idArray).publish()
 
-
         val cities = queryCountry.find().flatMap { it.cityList }
         val cityIdArray = cities.map { it.cityId }.toLongArray()
-        queryCity.setParameters(CityEntity_.cityId, cityIdArray)
-//
-//        val peopleList = cities.flatMap { it.peopleList }
-//        val peopleIdArray = peopleList.map { it.humanId }.toLongArray()
-//        queryPeople.setParameters(PeopleEntity_.humanId, peopleIdArray).publish()
+        publishSelectedCities(cityIdArray)
     }
+
+    override fun publishSelectedCities(idArray: LongArray) =
+        queryCity.setParameters(CityEntity_.cityId, idArray).publish()
+
+    override fun getSelectedCities(): List<CityEntity> = queryCity.find()
 }
