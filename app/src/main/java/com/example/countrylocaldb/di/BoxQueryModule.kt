@@ -1,6 +1,9 @@
 package com.example.countrylocaldb.di
 
+import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
+import com.example.countrylocaldb.data.data_source.local.entity.CityEntity_
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
+import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity_
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity_
 import dagger.Module
@@ -17,10 +20,17 @@ object BoxQueryModule {
 
     @Provides
     @Singleton
-    fun providesQueryCountry(box: Box<CountryEntity>): Query<CountryEntity> = box.query().build()
+    fun providesQueryCountry(box: Box<CountryEntity>): Query<CountryEntity> =
+        box.query().`in`(CountryEntity_.countryId, box.all.map { it.countryId }.toLongArray())
+            .build()
+
+    @Provides
+    @Singleton
+    fun providesQueryCity(box: Box<CityEntity>): Query<CityEntity> =
+        box.query().`in`(CityEntity_.cityId, box.all.map { it.cityId }.toLongArray()).build()
 
     @Provides
     @Singleton
     fun providesQueryPeople(box: Box<PeopleEntity>): Query<PeopleEntity> =
-        box.query().`in`(PeopleEntity_.humanId, box.all.map { it.humanId }.toLongArray()).build()
+        box.query().notIn(PeopleEntity_.humanId, longArrayOf()).build()
 }

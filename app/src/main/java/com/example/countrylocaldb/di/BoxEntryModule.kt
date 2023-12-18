@@ -1,5 +1,6 @@
 package com.example.countrylocaldb.di
 
+import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
 import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import dagger.Module
@@ -18,6 +19,11 @@ object BoxEntryModule {
     @Singleton
     fun providesCountryEntityBox(boxStore: BoxStore): Box<CountryEntity> =
         boxStore.boxFor(CountryEntity::class.java)
+
+    @Provides
+    @Singleton
+    fun providesCityEntityBox(boxStore: BoxStore): Box<CityEntity> =
+        boxStore.boxFor(CityEntity::class.java)
 
     @Provides
     @Singleton
