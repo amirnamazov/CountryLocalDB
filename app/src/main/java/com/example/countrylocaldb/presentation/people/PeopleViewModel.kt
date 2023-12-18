@@ -1,10 +1,12 @@
 package com.example.countrylocaldb.presentation.people
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.countrylocaldb.common.ResourceState
+import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToPeopleList
 import com.example.countrylocaldb.domain.model.People
 import com.example.countrylocaldb.domain.use_case.PeopleListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,21 +22,20 @@ class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase
     private val query = useCase.getQueryPeople()
 
     val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(query).map {
-        useCase.mapToListPeople(it)
+        it.mapToPeopleList()
     }
+
+    private val _liveDataSwipeRefresh = MutableLiveData(false)
+    val liveDataSwipeRefresh: LiveData<Boolean> get() = _liveDataSwipeRefresh
 
     fun initializePeopleList() {
-        if (query.find().isEmpty()) getCountriesFromNetwork()
+        if (query.find().isEmpty()) setCountriesFromNetworkToLocalDb()
     }
 
-    fun getCountriesFromNetwork() = viewModelScope.launch {
-        useCase.getCountryList().collect {
+    fun setCountriesFromNetworkToLocalDb() = viewModelScope.launch {
+        useCase.getCountryList().collect { state ->
             withContext(Dispatchers.Main) {
-                if (it == ResourceState.Success) {
-//                    delay(2000)
-//                    val longArray2 = longArrayOf(0, 1, 2, 3)
-//                    useCase.setParamsToQueryPeople(longArray2)
-                }
+                _liveDataSwipeRefresh.value = state is ResourceState.Loading
             }
         }
     }
