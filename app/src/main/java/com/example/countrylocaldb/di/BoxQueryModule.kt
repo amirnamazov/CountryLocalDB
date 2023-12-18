@@ -4,8 +4,6 @@ import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
 import com.example.countrylocaldb.data.data_source.local.entity.CityEntity_
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity_
-import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
-import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity_
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,9 +26,4 @@ object BoxQueryModule {
     @Singleton
     fun providesQueryCity(box: Box<CityEntity>): Query<CityEntity> =
         box.query().`in`(CityEntity_.cityId, box.all.map { it.cityId }.toLongArray()).build()
-
-    @Provides
-    @Singleton
-    fun providesQueryPeople(box: Box<PeopleEntity>): Query<PeopleEntity> =
-        box.query().notIn(PeopleEntity_.humanId, longArrayOf()).build()
 }

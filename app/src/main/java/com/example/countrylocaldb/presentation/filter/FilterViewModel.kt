@@ -16,7 +16,7 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
     val isAllChecked: ObservableBoolean = ObservableBoolean(true)
 
     private fun List<Country>.mapToFilterList(): List<FilterModel> =
-        map { country -> FilterModel(country.id, country.name) }
+        map { FilterModel(it.id, it.name) }
 
     fun onCheckAllClicked() = with(isAllChecked) {
         set(!get())
@@ -29,7 +29,7 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
     }
 
     fun publishSelectedCountries() {
-        val selectedOptions = filterModels.filterNot { it.checked.get() }
+        val selectedOptions = filterModels.filter { it.checked.get() }
         val idArray = selectedOptions.map { it.id }.toLongArray()
         useCase.publishSelectedCountries(idArray)
     }

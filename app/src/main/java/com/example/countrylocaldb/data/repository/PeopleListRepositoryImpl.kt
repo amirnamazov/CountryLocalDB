@@ -1,7 +1,8 @@
 package com.example.countrylocaldb.data.repository
 
+import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
+import com.example.countrylocaldb.data.data_source.local.entity.CityEntity_
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
-import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.data.data_source.remote.api.CountryListApi
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import com.example.countrylocaldb.domain.repository.PeopleListRepository
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class PeopleListRepositoryImpl @Inject constructor(
     private val api: CountryListApi,
     private val countryEntityBox: Box<CountryEntity>,
-    private val queryPeople: Query<PeopleEntity>
+    private val queryCity: Query<CityEntity>
 ) : PeopleListRepository {
 
     override suspend fun getCountriesFromApi(): Response<CountryListDTO> = api.getData()
@@ -21,5 +22,13 @@ class PeopleListRepositoryImpl @Inject constructor(
     override suspend fun putCountriesToBox(entities: List<CountryEntity>) =
         countryEntityBox.put(entities)
 
-    override fun getQueryPeople(): Query<PeopleEntity> = queryPeople
+    override fun getQueryCity(): Query<CityEntity> = queryCity
+
+    override fun clearAllBoxes() = countryEntityBox.removeAll()
+
+    override fun setAllParamsToCity() {
+        val cities = countryEntityBox.all.flatMap { it.cityList }
+        val idArray = cities.map { it.cityId }.toLongArray()
+        queryCity.setParameters(CityEntity_.cityId, idArray).publish()
+    }
 }

@@ -2,7 +2,6 @@ package com.example.countrylocaldb.di
 
 import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
-import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,9 +23,4 @@ object BoxEntryModule {
     @Singleton
     fun providesCityEntityBox(boxStore: BoxStore): Box<CityEntity> =
         boxStore.boxFor(CityEntity::class.java)
-
-    @Provides
-    @Singleton
-    fun providesPeopleEntityBox(boxStore: BoxStore): Box<PeopleEntity> =
-        boxStore.boxFor(PeopleEntity::class.java)
 }
