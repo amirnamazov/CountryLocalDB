@@ -9,6 +9,8 @@ import com.example.countrylocaldb.R
 import com.example.countrylocaldb.databinding.FragmentPeopleBinding
 import com.example.countrylocaldb.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 @AndroidEntryPoint
 class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding::inflate),
@@ -19,8 +21,23 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.initializePeopleList()
         setupRvPeople()
-        observeSwipeRefresh()
         initializeListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe
+    fun onResponseEvent(state: PeopleResponseEvent) {
+        binding.swipeRefresh.isRefreshing = state is PeopleResponseEvent.Loading
+        if (state is PeopleResponseEvent.Error) showSnackBar(state.message)
     }
 
     private fun initializeListeners() = with(binding) {
@@ -35,11 +52,6 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
             submitList(peopleList)
         }
     }
-
-    private fun observeSwipeRefresh() =
-        viewModel.liveDataSwipeRefresh.observe(viewLifecycleOwner) { loading ->
-            binding.swipeRefresh.isRefreshing = loading
-        }
 
     override fun onRefresh() { viewModel.setCountriesFromNetworkToLocalDb() }
 

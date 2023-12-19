@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<T : ViewBinding>(
     private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> T
@@ -19,6 +20,8 @@ abstract class BaseFragment<T : ViewBinding>(
         _binding = inflate(inflater, container, false)
         return _binding?.root
     }
+
+    fun showSnackBar(text: String) = Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -63,4 +63,6 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.49")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+    implementation("org.greenrobot:eventbus:3.3.1")
 }
