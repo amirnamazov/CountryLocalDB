@@ -11,9 +11,13 @@ class FilterUseCase @Inject constructor(private val repository: FilterRepository
 
     fun getAllCountries(): List<Country> = repository.getAllCountries().mapToCountryList()
 
+    fun getSelectedCities(): List<City> = repository.getSelectedCities().mapToCityList()
+
     fun filterCountries(idArray: LongArray) = repository.publishSelectedCitiesAndPeople(idArray)
 
     fun filterCities(idArray: LongArray) = repository.publishSelectedPeople(idArray)
 
-    fun getSelectedCities(): List<City> = repository.getSelectedCities().mapToCityList()
+    fun Country.isFiltered(): Boolean = repository.getFilteredCountryIds().contains(id)
+
+    fun City.isFiltered(): Boolean = repository.getFilteredCityIds().contains(id)
 }

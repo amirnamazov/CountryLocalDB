@@ -5,5 +5,5 @@ import androidx.databinding.ObservableBoolean
 data class FilterModel(
     val id: Long,
     val name: String,
-    val checked: ObservableBoolean = ObservableBoolean(true)
+    val checked: ObservableBoolean
 )

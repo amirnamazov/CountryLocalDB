@@ -26,7 +26,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilterBinding
 
     private fun setupAdapter() = with(FilterAdapter(viewModel)) {
         binding.rvFilter.adapter = this
-        submitList(viewModel.filterModels)
+        submitList(viewModel.filters)
     }
 
     override fun onClick(v: View?) {

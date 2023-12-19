@@ -18,6 +18,8 @@ class FilterRepositoryImpl @Inject constructor(
 
     override fun getAllCountries(): List<CountryEntity> = boxCountryEntity.all
 
+    override fun getSelectedCities(): List<CityEntity> = queryCity.find()
+
     override fun publishSelectedCitiesAndPeople(idArray: LongArray) {
         queryCity.setParameters(CityEntity_.countryEntityId, idArray).publish()
         publishSelectedPeople(queryCity.findIds())
@@ -26,5 +28,9 @@ class FilterRepositoryImpl @Inject constructor(
     override fun publishSelectedPeople(idArray: LongArray) =
         queryPeople.setParameters(PeopleEntity_.cityEntityId, idArray).publish()
 
-    override fun getSelectedCities(): List<CityEntity> = queryCity.find()
+    override fun getFilteredCountryIds(): Set<Long> =
+        getSelectedCities().map { it.countryEntity.target.countryId }.toSet()
+
+    override fun getFilteredCityIds(): Set<Long> =
+        queryPeople.find().map { it.cityEntity.target.cityId }.toSet()
 }

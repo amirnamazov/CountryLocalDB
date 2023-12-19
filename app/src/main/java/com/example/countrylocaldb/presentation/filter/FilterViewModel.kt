@@ -12,19 +12,25 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
 
     var isCountryFilter = true
 
-    val filterModels: List<FilterModel> by lazy {
-        if (isCountryFilter) useCase.getAllCountries().map { FilterModel(it.id, it.name) }
-        else useCase.getSelectedCities().map { FilterModel(it.id, it.name) }
+    val filters: List<FilterModel> by lazy {
+        useCase.run {
+            if (isCountryFilter) getAllCountries().map {
+                FilterModel(it.id, it.name, ObservableBoolean(it.isFiltered()))
+            }
+            else getSelectedCities().map {
+                FilterModel(it.id, it.name, ObservableBoolean(it.isFiltered()))
+            }
+        }
     }
 
-    val isAllChecked: ObservableBoolean = ObservableBoolean(true)
+    val isAllChecked by lazy { ObservableBoolean(filters.all { it.checked.get() }) }
 
     fun onCheckAllClicked() = with(isAllChecked) {
         set(!get())
-        filterModels.forEach { filter -> filter.checked.set(get()) }
+        filters.forEach { filter -> filter.checked.set(get()) }
     }
 
-    override fun onItemClicked(filter: FilterModel) = with(filterModels) {
+    override fun onItemClicked(filter: FilterModel) = with(filters) {
         find { it == filter }?.checked?.let { it.set(!it.get()) }
         isAllChecked.set(all { it.checked.get() })
     }
@@ -34,6 +40,5 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
         else useCase.filterCities(selectedIds())
     }
 
-    private fun selectedIds() = filterModels.filter { it.checked.get() }
-        .map { it.id }.toLongArray()
+    private fun selectedIds() = filters.filter { it.checked.get() }.map { it.id }.toLongArray()
 }
