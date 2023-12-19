@@ -30,7 +30,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilterBinding
     }
 
     override fun onClick(v: View?) {
-        viewModel.publishSelectedOptions()
+        viewModel.filterOptions()
         findNavController().navigateUp()
     }
 }

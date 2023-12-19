@@ -35,7 +35,7 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
         isAllChecked.set(all { it.checked.get() })
     }
 
-    fun publishSelectedOptions() {
+    fun filterOptions() {
         if (isCountryFilter) useCase.filterCountries(selectedIds())
         else useCase.filterCities(selectedIds())
     }

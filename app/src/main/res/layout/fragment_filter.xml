@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+        <import type="android.view.View"/>
         <variable name="vm" type="com.example.countrylocaldb.presentation.filter.FilterViewModel" />
     </data>
 
@@ -22,6 +23,7 @@
             android:gravity="center"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:text="@string/all"
+            android:visibility="@{vm.filters.isEmpty ? View.GONE : View.VISIBLE }"
             android:checked="@{vm.isAllChecked}"
             android:onClick="@{(view) -> vm.onCheckAllClicked() }"
             android:fontFamily="@font/inter_semi_bold"
