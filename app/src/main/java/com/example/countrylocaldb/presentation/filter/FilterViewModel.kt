@@ -9,12 +9,12 @@ import javax.inject.Inject
 @HiltViewModel
 class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : ViewModel() {
 
-    val countries = useCase.run {
-        getAllCountries().map { FilterModel(it.id, it.name, ObservableBoolean(it.isFiltered())) }
+    val countries = useCase.getAllCountries().map {
+        FilterModel(it.id, it.name, ObservableBoolean(useCase.isCountryFiltered(it)))
     }
 
-    val cities = useCase.run {
-        getSelectedCities().map { FilterModel(it.id, it.name, ObservableBoolean(it.isFiltered())) }
+    val cities = useCase.getSelectedCities().map {
+        FilterModel(it.id, it.name, ObservableBoolean(useCase.isCityFiltered(it)))
     }
 
     fun filterCountries() = useCase.filterCountries(countries.selectedIds())

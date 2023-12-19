@@ -1,6 +1,6 @@
 package com.example.countrylocaldb.domain.model
 
-data class City(
+data class Filter(
     val id: Long,
     val name: String
 )

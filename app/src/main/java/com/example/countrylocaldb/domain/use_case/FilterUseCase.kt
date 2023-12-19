@@ -1,23 +1,25 @@
 package com.example.countrylocaldb.domain.use_case
 
-import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToCityList
-import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToCountryList
-import com.example.countrylocaldb.domain.model.City
-import com.example.countrylocaldb.domain.model.Country
+import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToFilterList
+import com.example.countrylocaldb.domain.model.Filter
 import com.example.countrylocaldb.domain.repository.FilterRepository
 import javax.inject.Inject
 
 class FilterUseCase @Inject constructor(private val repository: FilterRepository) {
 
-    fun getAllCountries(): List<Country> = repository.getAllCountries().mapToCountryList()
+    fun getAllCountries(): List<Filter> = repository.getAllCountries().mapToFilterList()
 
-    fun getSelectedCities(): List<City> = repository.getSelectedCities().mapToCityList()
+    fun getSelectedCities(): List<Filter> = repository.getSelectedCities().mapToFilterList()
 
     fun filterCountries(idArray: LongArray) = repository.publishSelectedCitiesAndPeople(idArray)
 
     fun filterCities(idArray: LongArray) = repository.publishSelectedPeople(idArray)
 
-    fun Country.isFiltered(): Boolean = repository.getFilteredCountryIds().contains(id)
+    private val filteredCountryIds by lazy { repository.getFilteredCountryIds() }
 
-    fun City.isFiltered(): Boolean = repository.getFilteredCityIds().contains(id)
+    fun isCountryFiltered(filter: Filter): Boolean = filteredCountryIds.contains(filter.id)
+
+    private val filteredCityIds by lazy { repository.getFilteredCityIds() }
+
+    fun isCityFiltered(filter: Filter): Boolean = filteredCityIds.contains(filter.id)
 }
