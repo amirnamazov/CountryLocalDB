@@ -1,8 +1,7 @@
 package com.example.countrylocaldb.domain.use_case
 
 import com.example.countrylocaldb.common.ResourceState
-import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
-import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToPeopleList
+import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
 import com.example.countrylocaldb.data.data_source.remote.dto.CountryListDTO
 import com.example.countrylocaldb.data.data_source.remote.mapper.CountryEntitiesMapper.mapToCountryEntities
 import com.example.countrylocaldb.domain.repository.PeopleListRepository
@@ -33,13 +32,9 @@ class PeopleListUseCase @Inject constructor(private val repository: PeopleListRe
 
     private suspend fun handleSuccess(countryListDTO: CountryListDTO) = with(repository) {
         clearAllBoxes()
-        val countryEntities = countryListDTO.mapToCountryEntities()
-        putCountriesToBox(countryEntities)
-        publishAllCities()
+        putCountriesToBox(countryListDTO.mapToCountryEntities())
+        publishAllCitiesAndPeople()
     }
 
-    fun getQueryCity(): Query<CityEntity> = repository.getQueryCity()
-
-    fun flatMapToPeopleList(entities: List<CityEntity>) =
-        entities.flatMap { city -> city.peopleList.mapToPeopleList() }
+    fun getQueryPeople(): Query<PeopleEntity> = repository.getQueryPeople()
 }

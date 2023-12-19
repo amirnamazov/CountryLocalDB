@@ -3,30 +3,28 @@ package com.example.countrylocaldb.data.repository
 import com.example.countrylocaldb.data.data_source.local.entity.CityEntity
 import com.example.countrylocaldb.data.data_source.local.entity.CityEntity_
 import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
-import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity_
+import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity
+import com.example.countrylocaldb.data.data_source.local.entity.PeopleEntity_
 import com.example.countrylocaldb.domain.repository.FilterRepository
 import io.objectbox.Box
 import io.objectbox.query.Query
 import javax.inject.Inject
 
 class FilterRepositoryImpl @Inject constructor(
-    private val countryEntityBox: Box<CountryEntity>,
-    private val queryCountry: Query<CountryEntity>,
-    private val queryCity: Query<CityEntity>
+    private val boxCountryEntity: Box<CountryEntity>,
+    private val queryCity: Query<CityEntity>,
+    private val queryPeople: Query<PeopleEntity>
 ) : FilterRepository {
 
-    override fun getAllCountries(): List<CountryEntity> = countryEntityBox.all
+    override fun getAllCountries(): List<CountryEntity> = boxCountryEntity.all
 
-    override fun publishSelectedCountries(idArray: LongArray) {
-        queryCountry.setParameters(CountryEntity_.countryId, idArray).publish()
-
-        val cities = queryCountry.find().flatMap { it.cityList }
-        val cityIdArray = cities.map { it.cityId }.toLongArray()
-        publishSelectedCities(cityIdArray)
+    override fun publishSelectedCitiesAndPeople(idArray: LongArray) {
+        queryCity.setParameters(CityEntity_.countryEntityId, idArray).publish()
+        publishSelectedPeople(queryCity.findIds())
     }
 
-    override fun publishSelectedCities(idArray: LongArray) =
-        queryCity.setParameters(CityEntity_.cityId, idArray).publish()
+    override fun publishSelectedPeople(idArray: LongArray) =
+        queryPeople.setParameters(PeopleEntity_.cityEntityId, idArray).publish()
 
     override fun getSelectedCities(): List<CityEntity> = queryCity.find()
 }

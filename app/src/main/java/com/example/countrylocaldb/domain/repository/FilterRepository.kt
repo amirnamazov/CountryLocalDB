@@ -6,9 +6,9 @@ import com.example.countrylocaldb.data.data_source.local.entity.CountryEntity
 interface FilterRepository {
     fun getAllCountries(): List<CountryEntity>
 
-    fun publishSelectedCountries(idArray: LongArray)
+    fun publishSelectedCitiesAndPeople(idArray: LongArray)
 
-    fun publishSelectedCities(idArray: LongArray)
+    fun publishSelectedPeople(idArray: LongArray)
 
     fun getSelectedCities(): List<CityEntity>
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.countrylocaldb.databinding.FragmentFilterBinding
 import com.example.countrylocaldb.presentation.base.BaseFragment
@@ -23,14 +24,13 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilterBinding
         binding.btnConfirm.setOnClickListener(this)
     }
 
-    private fun setupAdapter() {
-        val adapter = FilterAdapter(viewModel)
-        binding.rvFilter.adapter = adapter
-        adapter.submitList(viewModel.filterModels)
+    private fun setupAdapter() = with(FilterAdapter(viewModel)) {
+        binding.rvFilter.adapter = this
+        submitList(viewModel.filterModels)
     }
 
     override fun onClick(v: View?) {
         viewModel.publishSelectedOptions()
-//        findNavController().navigateUp()
+        findNavController().navigateUp()
     }
 }

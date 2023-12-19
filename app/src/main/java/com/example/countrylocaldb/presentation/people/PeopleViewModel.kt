@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.countrylocaldb.common.ResourceState
+import com.example.countrylocaldb.data.data_source.local.mapper.CountryListMapper.mapToPeopleList
 import com.example.countrylocaldb.domain.model.People
 import com.example.countrylocaldb.domain.use_case.PeopleListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase) : ViewModel() {
 
-    val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(useCase.getQueryCity()).map {
-        useCase.flatMapToPeopleList(it)
+    val liveDataPeople: LiveData<List<People>> = ObjectBoxLiveData(useCase.getQueryPeople()).map {
+        it.mapToPeopleList()
     }
 
     private val _liveDataSwipeRefresh = MutableLiveData(false)

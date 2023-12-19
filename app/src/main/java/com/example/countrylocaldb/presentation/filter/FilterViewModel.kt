@@ -30,9 +30,10 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
     }
 
     fun publishSelectedOptions() {
-        val selectedOptions = filterModels.filter { it.checked.get() }
-        val idArray = selectedOptions.map { it.id }.toLongArray()
-        if (isCountryFilter) useCase.publishSelectedCountries(idArray)
-        else useCase.publishSelectedCities(idArray)
+        if (isCountryFilter) useCase.filterCountries(selectedIds())
+        else useCase.filterCities(selectedIds())
     }
+
+    private fun selectedIds() = filterModels.filter { it.checked.get() }
+        .map { it.id }.toLongArray()
 }
