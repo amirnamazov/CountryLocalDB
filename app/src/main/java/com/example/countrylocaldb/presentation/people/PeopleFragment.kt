@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.countrylocaldb.R
 import com.example.countrylocaldb.databinding.FragmentPeopleBinding
 import com.example.countrylocaldb.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,9 +43,8 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
 
     override fun onRefresh() { viewModel.setCountriesFromNetworkToLocalDb() }
 
-    override fun onClick(v: View?) {
-        val action = PeopleFragmentDirections
-            .fromPeopleToFilterFrag(v?.id == binding.btnCountryFilter.id)
-        findNavController().navigate(action)
-    }
+    override fun onClick(v: View?) = findNavController().navigate(
+        if (v?.id == binding.btnCountryFilter.id) R.id.fromPeopleToFilterCountryFrag
+        else R.id.fromPeopleToFilterCityFrag
+    )
 }

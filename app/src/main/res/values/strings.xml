@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">CountryLocalDB</string>
     <string name="people">People</string>
-    <string name="filter">Filter</string>
+    <string name="filter_country">Filter Country</string>
+    <string name="filter_city">Filter City</string>
     <string name="all">All&#160;</string>
     <string name="confirm">Confirm</string>
 </resources>

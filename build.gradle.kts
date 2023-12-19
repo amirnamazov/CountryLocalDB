@@ -1,7 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     val objectboxVersion by extra("3.7.1")
-    val navVersion = "2.7.6"
 
     repositories {
         mavenCentral()
@@ -9,7 +8,6 @@ buildscript {
 
     dependencies {
         classpath("io.objectbox:objectbox-gradle-plugin:$objectboxVersion")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
     }
 }
 

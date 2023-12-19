@@ -3,7 +3,9 @@
 
     <data>
         <import type="android.view.View"/>
-        <variable name="vm" type="com.example.countrylocaldb.presentation.filter.FilterViewModel" />
+        <variable
+            name="frag"
+            type="com.example.countrylocaldb.presentation.filter.fragments.FilterFragment" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +14,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        tools:context=".presentation.filter.FilterFragment">
+        tools:context=".presentation.filter.fragments.FilterFragment">
 
         <CheckedTextView
             android:layout_width="wrap_content"
@@ -24,9 +26,9 @@
             android:checkMarkTint="@color/primary"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:text="@string/all"
-            android:visibility="@{vm.filters.isEmpty ? View.GONE : View.VISIBLE }"
-            android:checked="@{vm.isAllChecked}"
-            android:onClick="@{(view) -> vm.onCheckAllClicked() }"
+            android:visibility="@{frag.filters.isEmpty ? View.GONE : View.VISIBLE }"
+            android:checked="@{frag.isAllChecked}"
+            android:onClick="@{(view) -> frag.onCheckAllClicked() }"
             android:fontFamily="@font/inter_semi_bold"
             android:textSize="18sp"/>
 

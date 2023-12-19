@@ -11,19 +11,23 @@
         android:label="@string/people"
         tools:layout="@layout/fragment_people">
         <action
-            android:id="@+id/fromPeopleToFilterFrag"
-            app:destination="@id/frag_filter"/>
+            android:id="@+id/fromPeopleToFilterCountryFrag"
+            app:destination="@id/frag_filter_country"/>
+        <action
+            android:id="@+id/fromPeopleToFilterCityFrag"
+            app:destination="@id/frag_filter_city"/>
     </fragment>
 
     <fragment
-        android:id="@+id/frag_filter"
-        android:name="com.example.countrylocaldb.presentation.filter.FilterFragment"
-        android:label="@string/filter"
-        tools:layout="@layout/fragment_filter">
-        <argument
-            android:name="isCountryFilter"
-            app:argType="boolean"
-            android:defaultValue="true" />
-    </fragment>
+        android:id="@+id/frag_filter_country"
+        android:name="com.example.countrylocaldb.presentation.filter.fragments.FilterCountryFragment"
+        android:label="@string/filter_country"
+        tools:layout="@layout/fragment_filter"/>
+
+    <fragment
+        android:id="@+id/frag_filter_city"
+        android:name="com.example.countrylocaldb.presentation.filter.fragments.FilterCityFragment"
+        android:label="@string/filter_city"
+        tools:layout="@layout/fragment_filter"/>
 
 </navigation>
