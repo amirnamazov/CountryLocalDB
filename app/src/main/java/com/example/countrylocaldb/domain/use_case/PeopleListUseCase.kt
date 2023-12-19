@@ -15,14 +15,13 @@ class PeopleListUseCase @Inject constructor(private val repository: PeopleListRe
 
     fun isLocalDbEmpty(): Boolean = repository.isLocalDbEmpty()
 
-    suspend fun getCountryList(): Flow<ResourceState> = flow {
+    suspend fun getCountryList(): Flow<ResourceState<CountryListDTO>> = flow {
         emit(ResourceState.Loading())
         val response = repository.getCountriesFromApi()
         val countryListDTO = response.body()
         if (response.isSuccessful) {
             if (countryListDTO == null) throw NullPointerException()
-            handleSuccess(countryListDTO)
-            emit(ResourceState.Success())
+            emit(ResourceState.Success(countryListDTO))
         } else {
             emit(ResourceState.Error(response.message()))
         }
@@ -30,11 +29,13 @@ class PeopleListUseCase @Inject constructor(private val repository: PeopleListRe
         emit(ResourceState.Error(throwable.message ?: "Something went wrong."))
     }
 
-    private suspend fun handleSuccess(countryListDTO: CountryListDTO) = with(repository) {
+    suspend fun handleSuccess(countryListDTO: CountryListDTO) = with(repository) {
         clearAllBoxes()
         putCountriesToBox(countryListDTO.mapToCountryEntities())
         publishAllCitiesAndPeople()
     }
+
+    fun reloadLocalDb() = repository.publishAllCitiesAndPeople()
 
     fun getQueryPeople(): Query<PeopleEntity> = repository.getQueryPeople()
 }

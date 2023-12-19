@@ -24,6 +24,7 @@
             android:paddingStart="15dp"
             android:paddingEnd="10dp"
             android:gravity="center"
+            android:checkMarkTint="@color/primary"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:checked="@{filter.checked}"
             android:text="@{filter.name}"

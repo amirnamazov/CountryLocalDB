@@ -23,16 +23,18 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
         }
     }
 
-    val isAllChecked by lazy { ObservableBoolean(filters.all { it.checked.get() }) }
+    private fun allChecked() = filters.all { it.checked.get() }
+
+    val isAllChecked by lazy { ObservableBoolean(allChecked()) }
 
     fun onCheckAllClicked() = with(isAllChecked) {
         set(!get())
-        filters.forEach { filter -> filter.checked.set(get()) }
+        filters.forEach { it.checked.set(get()) }
     }
 
-    override fun onItemClicked(filter: FilterModel) = with(filters) {
-        find { it == filter }?.checked?.let { it.set(!it.get()) }
-        isAllChecked.set(all { it.checked.get() })
+    override fun onItemClicked(filter: FilterModel) {
+        filters.find { it == filter }?.checked?.let { it.set(!it.get()) }
+        isAllChecked.set(allChecked())
     }
 
     fun filterOptions() {

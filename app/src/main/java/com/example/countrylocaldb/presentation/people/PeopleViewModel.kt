@@ -34,6 +34,11 @@ class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase
         useCase.getCountryList().collect { state ->
             withContext(Dispatchers.Main) {
                 _liveDataSwipeRefresh.value = state is ResourceState.Loading
+                when(state) {
+                    is ResourceState.Loading -> {}
+                    is ResourceState.Error -> useCase.reloadLocalDb()
+                    is ResourceState.Success -> useCase.handleSuccess(state.data)
+                }
             }
         }
     }

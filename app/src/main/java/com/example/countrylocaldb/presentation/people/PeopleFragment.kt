@@ -18,12 +18,14 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.initializePeopleList()
         setupRvPeople()
-
-        binding.swipeRefresh.setOnRefreshListener(this)
         observeSwipeRefresh()
+        initializeListeners()
+    }
 
-        binding.btnCountryFilter.setOnClickListener(this)
-        binding.btnCityFilter.setOnClickListener(this)
+    private fun initializeListeners() = with(binding) {
+        swipeRefresh.setOnRefreshListener(this@PeopleFragment)
+        btnCountryFilter.setOnClickListener(this@PeopleFragment)
+        btnCityFilter.setOnClickListener(this@PeopleFragment)
     }
 
     private fun setupRvPeople() = with(PeopleAdapter()) {
@@ -38,9 +40,7 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
             binding.swipeRefresh.isRefreshing = loading
         }
 
-    override fun onRefresh() {
-        viewModel.setCountriesFromNetworkToLocalDb()
-    }
+    override fun onRefresh() { viewModel.setCountriesFromNetworkToLocalDb() }
 
     override fun onClick(v: View?) {
         val action = PeopleFragmentDirections

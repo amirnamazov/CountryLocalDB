@@ -1,7 +1,7 @@
 package com.example.countrylocaldb.common
 
-sealed class ResourceState(val message: String? = null) {
-    class Loading(message: String? = null) : ResourceState(message)
-    class Success(message: String? = null) : ResourceState(message)
-    class Error(message: String, val code: Int? = null) : ResourceState(message)
+sealed class ResourceState<T>(val message: String? = null) {
+    class Loading<T>(message: String? = null) : ResourceState<T>(message)
+    class Success<T>(val data: T, message: String? = null) : ResourceState<T>(message)
+    class Error<T>(message: String, val code: Int? = null) : ResourceState<T>(message)
 }
