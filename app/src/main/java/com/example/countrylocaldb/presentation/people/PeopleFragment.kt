@@ -35,9 +35,9 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     }
 
     @Subscribe
-    fun onResponseEvent(state: PeopleResponseEvent) {
-        binding.swipeRefresh.isRefreshing = state is PeopleResponseEvent.Loading
-        if (state is PeopleResponseEvent.Error) showSnackBar(state.message)
+    fun onResponseEvent(event: Pair<Boolean, String>) {
+        binding.swipeRefresh.isRefreshing = event.first
+        if (event.second.isNotEmpty()) showSnackBar(event.second)
     }
 
     private fun initializeListeners() = with(binding) {
