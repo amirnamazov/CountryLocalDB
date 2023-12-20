@@ -21,11 +21,14 @@ abstract class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilt
 
     abstract val filters: List<FilterModel>
 
-    abstract fun filterOptions()
+    protected abstract fun filterOptions()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAdapter()
         binding.frag = this
+    }
+
+    override fun initializeListeners() {
         binding.btnConfirm.setOnClickListener(this)
     }
 

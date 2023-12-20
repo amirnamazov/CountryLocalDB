@@ -22,7 +22,6 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.initializePeopleList()
         setupRvPeople()
-        initializeListeners()
     }
 
     override fun onStart() {
@@ -41,7 +40,7 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
         if (!state.message.isNullOrEmpty()) showSnackBar(state.message)
     }
 
-    private fun initializeListeners() = with(binding) {
+    override fun initializeListeners() = with(binding) {
         swipeRefresh.setOnRefreshListener(this@PeopleFragment)
         btnCountryFilter.setOnClickListener(this@PeopleFragment)
         btnCityFilter.setOnClickListener(this@PeopleFragment)

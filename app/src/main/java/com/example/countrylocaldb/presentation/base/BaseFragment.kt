@@ -16,8 +16,11 @@ abstract class BaseFragment<T : ViewBinding>(
 
     protected val binding: T get() = _binding!!
 
+    protected abstract fun initializeListeners()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         _binding = inflate(inflater, container, false)
+        initializeListeners()
         return _binding?.root
     }
 
