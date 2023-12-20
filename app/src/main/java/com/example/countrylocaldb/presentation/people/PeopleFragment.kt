@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.countrylocaldb.R
+import com.example.countrylocaldb.common.ResourceState
 import com.example.countrylocaldb.databinding.FragmentPeopleBinding
 import com.example.countrylocaldb.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,9 +36,9 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
     }
 
     @Subscribe
-    fun onResponseEvent(event: Pair<Boolean, String>) {
-        binding.swipeRefresh.isRefreshing = event.first
-        if (event.second.isNotEmpty()) showSnackBar(event.second)
+    fun onResponseEvent(state: ResourceState<*>) {
+        binding.swipeRefresh.isRefreshing = state is ResourceState.Loading
+        if (!state.message.isNullOrEmpty()) showSnackBar(state.message)
     }
 
     private fun initializeListeners() = with(binding) {

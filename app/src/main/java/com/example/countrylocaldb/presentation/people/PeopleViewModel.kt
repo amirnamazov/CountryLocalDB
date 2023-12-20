@@ -32,15 +32,15 @@ class PeopleViewModel @Inject constructor(private val useCase: PeopleListUseCase
             withContext(Dispatchers.Main) {
                 when (state) {
                     is ResourceState.Loading ->
-                        EventBus.getDefault().post(true to "")
+                        EventBus.getDefault().post(state)
 
                     is ResourceState.Error -> {
-                        EventBus.getDefault().post(false to state.message!!)
+                        EventBus.getDefault().post(state)
                         useCase.reloadLocalDb()
                     }
 
                     is ResourceState.Success -> {
-                        EventBus.getDefault().post(false to "")
+                        EventBus.getDefault().post(state)
                         useCase.handleSuccess(state.data)
                     }
                 }
