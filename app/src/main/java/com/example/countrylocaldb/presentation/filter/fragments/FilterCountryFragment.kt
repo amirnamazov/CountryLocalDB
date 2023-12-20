@@ -4,7 +4,7 @@ import com.example.countrylocaldb.presentation.filter.FilterModel
 
 class FilterCountryFragment : FilterFragment() {
 
-    override fun getFilters(): List<FilterModel> = viewModel.countries
+    override val filters: List<FilterModel> get() = viewModel.countries
 
     override fun filterOptions() = viewModel.filterCountries()
 }

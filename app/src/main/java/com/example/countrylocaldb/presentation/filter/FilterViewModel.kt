@@ -23,4 +23,16 @@ class FilterViewModel @Inject constructor(private val useCase: FilterUseCase) : 
 
     private fun List<FilterModel>.selectedIds() =
         filter { it.checked.get() }.map { it.id }.toLongArray()
+
+    fun List<FilterModel>.isAllChecked() = all { it.checked.get() }
+
+    fun ObservableBoolean.checkAll(filters: List<FilterModel>) {
+        set(!get())
+        filters.forEach { it.checked.set(get()) }
+    }
+
+    fun FilterModel.check(allChecked: ObservableBoolean, filters: List<FilterModel>) {
+        checked.set(!checked.get())
+        allChecked.set(filters.isAllChecked())
+    }
 }

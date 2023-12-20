@@ -27,7 +27,7 @@
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:text="@string/all"
             android:visibility="@{frag.filters.isEmpty ? View.GONE : View.VISIBLE }"
-            android:checked="@{frag.isAllChecked}"
+            android:checked="@{frag.allChecked}"
             android:onClick="@{(view) -> frag.onCheckAllClicked() }"
             android:fontFamily="@font/inter_semi_bold"
             android:textSize="18sp"/>

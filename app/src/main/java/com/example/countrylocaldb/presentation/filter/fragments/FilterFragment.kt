@@ -17,9 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilterBinding::inflate),
     OnClickListener, FilterAdapter.ItemClick {
 
-    val viewModel: FilterViewModel by viewModels()
+    protected val viewModel: FilterViewModel by viewModels()
 
-    abstract fun getFilters(): List<FilterModel>
+    abstract val filters: List<FilterModel>
 
     abstract fun filterOptions()
 
@@ -31,7 +31,7 @@ abstract class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilt
 
     private fun setupAdapter() = with(FilterAdapter(this)) {
         binding.rvFilter.adapter = this
-        submitList(getFilters())
+        submitList(filters)
     }
 
     override fun onClick(v: View?) {
@@ -39,17 +39,15 @@ abstract class FilterFragment : BaseFragment<FragmentFilterBinding>(FragmentFilt
         findNavController().navigateUp()
     }
 
-    private fun allChecked() = getFilters().all { it.checked.get() }
-
-    val isAllChecked by lazy { ObservableBoolean(allChecked()) }
-
-    fun onCheckAllClicked() = with(isAllChecked) {
-        set(!get())
-        getFilters().forEach { it.checked.set(get()) }
+    val allChecked by lazy {
+        viewModel.run { ObservableBoolean(filters.isAllChecked()) }
     }
 
-    override fun onItemClicked(filter: FilterModel) {
-        getFilters().find { it == filter }?.checked?.let { it.set(!it.get()) }
-        isAllChecked.set(allChecked())
+    fun onCheckAllClicked() = viewModel.run {
+        allChecked.checkAll(filters)
+    }
+
+    override fun onItemClicked(filter: FilterModel) = viewModel.run {
+        filter.check(allChecked, filters)
     }
 }
