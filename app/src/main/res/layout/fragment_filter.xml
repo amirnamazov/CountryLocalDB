@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:visibility="@{frag.filters.isEmpty ? View.GONE : View.VISIBLE }"
             android:textSize="18sp"
             android:fontFamily="@font/inter_semi_bold"
             android:text="@string/confirm"/>
