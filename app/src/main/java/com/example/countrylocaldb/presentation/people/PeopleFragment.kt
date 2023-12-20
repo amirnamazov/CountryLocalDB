@@ -53,7 +53,7 @@ class PeopleFragment : BaseFragment<FragmentPeopleBinding>(FragmentPeopleBinding
         }
     }
 
-    override fun onRefresh() = viewModel.setCountriesFromNetworkToLocalDb()
+    override fun onRefresh() { viewModel.setCountriesFromNetworkToLocalDb() }
 
     override fun onClick(v: View?) = findNavController().navigate(
         if (v?.id == binding.btnCountryFilter.id) R.id.fromPeopleToFilterCountryFrag
