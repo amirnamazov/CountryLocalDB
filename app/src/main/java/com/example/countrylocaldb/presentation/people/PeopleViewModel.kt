@@ -53,6 +53,9 @@ class PeopleViewModel @Inject constructor(
                     }
                 }
             }
-        else EventBus.getDefault().post(false to "No connection.")
+        else {
+            EventBus.getDefault().post(false to "No connection.")
+            useCase.reloadLocalDb()
+        }
     }
 }
